@@ -1,4 +1,3 @@
-
 const weatherAPIKey = 'c9680636c1e823cd3b530a0750643b18';
 
 window.addEventListener('load', (event) => {
@@ -68,7 +67,27 @@ function RenderWeatherCurrent(city, data) {
   document.getElementById('weather-current-temperature').innerHTML = 'Temp: ' + data.current.temp + '°F';
   document.getElementById('weather-current-windspeed').innerHTML = 'Wind: ' + data.current.wind_speed + ' MPH';
   document.getElementById('weather-current-humidity').innerHTML = 'Humidity: ' + data.current.humidity + '%';
-  document.getElementById('weather-current-uv').innerHTML = data.current.uvi;
+  document.getElementById('weather-current-uv').innerHTML = 'UV Index: <span class="uv-index" style="font-weight:bold; padding: 3px; border-radius: 3px; background-color: ' + UVIndexColor(data.current.uvi) + '">' + data.current.uvi + '</span>';
+}
+
+/**
+ * Returns the Websafe color CSS code for the UV Index value
+ * @param {float} value 
+ * @returns string - css websafe color
+ */
+function UVIndexColor(value) {
+  switch (true) {
+    case (value < 3): 
+      return 'green';
+    case (value < 6):
+      return 'yellow';
+    case (value < 8):
+      return 'orange';
+    case (value < 11):
+      return 'red';
+    default:
+      return 'maroon';
+  }
 }
 
 /**
@@ -152,6 +171,6 @@ function RenderSearchButtonHistory() {
   //we need to iterate through each item and add a button for each
   for (x = 0; x < data.length; x++) {
     //create our html object to add to our container
-    container.innerHTML += '<button onclick="SearchWeatherAPI(\'' + data[x] + '\');">' + data[x] + '</button>';
+    container.innerHTML += '<button class="btn btn-primary col-sm-12 mb-2" onclick="SearchWeatherAPI(\'' + data[x] + '\');">' + data[x] + '</button>';
   }
 }
